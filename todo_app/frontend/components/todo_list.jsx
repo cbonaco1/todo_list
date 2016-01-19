@@ -46,10 +46,11 @@ var TodoListItem = React.createClass({
 
   render: function() {
     return (
-      <div key={this.props.todo.id}>
+      <div>
         <div>{this.props.todo.title}</div>
         <div>{this.props.todo.body}</div>
         <button onClick={this.handleDestroy}>Delete</button>
+        <DoneButton todo={this.props.todo}/>
       </div>
     );
   }
@@ -96,6 +97,29 @@ var TodoForm = React.createClass({
     );
   }
 
+});
+
+var DoneButton = React.createClass({
+  //make button text a state
+  handleDone: function(e) {
+    e.preventDefault();
+    TodoStore.toggleDone(this.props.todo);
+    //setState text:""
+  },
+
+  render: function() {
+    var text = "";
+    if (this.props.todo.done) {
+      text = "Undo";
+    }
+    else {
+      text = "Done";
+    }
+
+    return (
+      <button onClick={this.handleDone}>{text}</button>
+    );
+  }
 });
 
 module.exports = TodoList;

@@ -128,6 +128,7 @@
 	  },
 	
 	  toggleDone: function (todo) {
+	    todo.done = !todo.done;
 	    $.ajax({
 	      type: "PATCH",
 	      url: "/api/todos/" + todo.id,
@@ -135,8 +136,7 @@
 	      data: { todo: todo },
 	      success: function (newTodo) {
 	        var index = _todos.indexOf(todo);
-	        _todos.slice(index, 1);
-	        _todos.push(newTodo);
+	        _todos[index] = newTodo;
 	        TodoStore.changed();
 	      },
 	      error: function () {
@@ -19801,7 +19801,7 @@
 	  render: function () {
 	    return React.createElement(
 	      'div',
-	      { key: this.props.todo.id },
+	      null,
 	      React.createElement(
 	        'div',
 	        null,
@@ -19816,7 +19816,8 @@
 	        'button',
 	        { onClick: this.handleDestroy },
 	        'Delete'
-	      )
+	      ),
+	      React.createElement(DoneButton, { todo: this.props.todo })
 	    );
 	  }
 	});
@@ -19869,6 +19870,32 @@
 	    );
 	  }
 	
+	});
+	
+	var DoneButton = React.createClass({
+	  displayName: 'DoneButton',
+	
+	  //make button text a state
+	  handleDone: function (e) {
+	    e.preventDefault();
+	    TodoStore.toggleDone(this.props.todo);
+	    //setState text:""
+	  },
+	
+	  render: function () {
+	    var text = "";
+	    if (this.props.todo.done) {
+	      text = "Undo";
+	    } else {
+	      text = "Done";
+	    }
+	
+	    return React.createElement(
+	      'button',
+	      { onClick: this.handleDone },
+	      text
+	    );
+	  }
 	});
 	
 	module.exports = TodoList;

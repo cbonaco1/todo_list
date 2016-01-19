@@ -67,6 +67,7 @@ var TodoStore = {
   },
 
   toggleDone: function (todo) {
+    todo.done = !todo.done;
     $.ajax({
       type: "PATCH",
       url: "/api/todos/" + todo.id,
@@ -74,8 +75,7 @@ var TodoStore = {
       data: {todo: todo},
       success: function(newTodo) {
         var index = _todos.indexOf(todo);
-        _todos.slice(index, 1);
-        _todos.push(newTodo);
+        _todos[index] = newTodo;
         TodoStore.changed();
       },
       error: function() {
