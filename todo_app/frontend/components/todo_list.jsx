@@ -100,11 +100,9 @@ var TodoForm = React.createClass({
 });
 
 var DoneButton = React.createClass({
-  //make button text a state
   handleDone: function(e) {
     e.preventDefault();
     TodoStore.toggleDone(this.props.todo);
-    //setState text:""
   },
 
   render: function() {
