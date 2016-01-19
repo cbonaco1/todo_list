@@ -1,3 +1,4 @@
+require 'byebug'
 class Api::TodosController < ApplicationController
 
   def index
@@ -28,9 +29,11 @@ class Api::TodosController < ApplicationController
   end
 
   def destroy
+    # debugger
     todo = Todo.find(params[:id])
     todo.destroy!
-    redirect_to root
+    # redirect_to root_url
+    render json: todo
   end
 
   private

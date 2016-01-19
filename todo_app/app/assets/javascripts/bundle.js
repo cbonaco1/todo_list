@@ -116,9 +116,9 @@
 	      url: "/api/todos/" + todo.id,
 	      dataType: "json",
 	      data: { todo: todo },
-	      success: function (todo) {
-	        var index = _todos.indexOf(todo);
-	        _todos.slice(index, 1);
+	      success: function (oldToto) {
+	        var index = _todos.indexOf(oldToto);
+	        _todos.splice(index, 1);
 	        TodoStore.changed();
 	      },
 	      error: function () {
@@ -19793,6 +19793,11 @@
 	var TodoListItem = React.createClass({
 	  displayName: 'TodoListItem',
 	
+	  handleDestroy: function (e) {
+	    e.preventDefault();
+	    TodoStore.destroy(this.props.todo);
+	  },
+	
 	  render: function () {
 	    return React.createElement(
 	      'div',
@@ -19806,6 +19811,11 @@
 	        'div',
 	        null,
 	        this.props.todo.body
+	      ),
+	      React.createElement(
+	        'button',
+	        { onClick: this.handleDestroy },
+	        'Delete'
 	      )
 	    );
 	  }
