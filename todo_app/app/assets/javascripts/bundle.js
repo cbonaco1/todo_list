@@ -19769,24 +19769,96 @@
 	  },
 	
 	  render: function () {
-	    var list = this.state.todos.map(function (todo) {
-	      return React.createElement(
-	        'li',
-	        { key: todo.id },
-	        todo.title
-	      );
-	    });
+	    var list = "";
+	
+	    if (this.state.todos.length > 0) {
+	      list = this.state.todos.map(function (todo) {
+	        return React.createElement(TodoListItem, { key: todo.id, todo: todo });
+	      });
+	    }
 	
 	    return React.createElement(
 	      'div',
 	      null,
 	      React.createElement(
-	        'ul',
+	        'div',
 	        null,
 	        list
+	      ),
+	      React.createElement(TodoForm, null)
+	    );
+	  }
+	});
+	
+	var TodoListItem = React.createClass({
+	  displayName: 'TodoListItem',
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      { key: this.props.todo.id },
+	      React.createElement(
+	        'div',
+	        null,
+	        this.props.todo.title
+	      ),
+	      React.createElement(
+	        'div',
+	        null,
+	        this.props.todo.body
 	      )
 	    );
 	  }
+	});
+	
+	var TodoForm = React.createClass({
+	  displayName: 'TodoForm',
+	
+	  getInitialState: function () {
+	    return { title: "", body: "" };
+	  },
+	
+	  updateTitle: function (e) {
+	    this.setState({ title: e.target.value });
+	  },
+	
+	  updateBody: function (e) {
+	    this.setState({ body: e.target.value });
+	  },
+	
+	  handleSubmit: function (e) {
+	    e.preventDefault();
+	    var newTodo = {
+	      title: this.state.title,
+	      body: this.state.body,
+	      done: false
+	    };
+	
+	    TodoStore.create(newTodo);
+	    this.setState({ title: "", body: "" });
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      'form',
+	      { onSubmit: this.handleSubmit },
+	      React.createElement(
+	        'label',
+	        null,
+	        'Title:',
+	        React.createElement('input', { type: 'text', value: this.state.title, onChange: this.updateTitle })
+	      ),
+	      React.createElement('br', null),
+	      React.createElement(
+	        'label',
+	        null,
+	        'Body:',
+	        React.createElement('input', { type: 'text', value: this.state.body, onChange: this.updateBody })
+	      ),
+	      React.createElement('input', { type: 'submit', value: 'Add Todo' })
+	    );
+	  }
+	
 	});
 	
 	module.exports = TodoList;

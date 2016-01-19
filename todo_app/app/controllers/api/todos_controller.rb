@@ -8,7 +8,7 @@ class Api::TodosController < ApplicationController
     render json: Todo.find(params[:id])
   end
 
-  def create # how does rails know to find bang methods?
+  def create
     todo = Todo.new(todo_params)
     if todo.save!
       render json: todo
