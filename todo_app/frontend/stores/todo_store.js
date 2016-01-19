@@ -8,7 +8,7 @@ var TodoStore = {
     });
   },
 
-  addChangedHander: function (handler) {
+  addChangedHandler: function (handler) {
     _callbacks.push(handler);
   },
 
